@@ -1,0 +1,149 @@
+<!-- Vol2 -->
+
+<span>
+
+    <h2 class="major">
+    Volume 2: Commands</h2>
+<h3>Setting up a command</h3>
+Using commands in a plugin enchants your Plugin! Commands can automatically and easily do things for you!
+<blockquote>Insert these "use" statements if you are using commands:</blockquote>
+<pre><code>
+// Command
+use pocketmine\command\Command;
+
+// Person who does command
+use pocketmine\command\CommandSender;
+</code></pre>
+<blockquote>To setup the command we use a public function! Layout:</blockquote>
+<pre><code>
+public function onCommand(CommandSender $sender,Command $command,string $label,array $args) : bool {
+
+}
+</code></pre> It may be long for a function, but thats how you're gonna make commands!
+<blockquote>After Public Function onCommand():</blockquote>
+
+<pre><code>
+if ($command->getName() == "test") { //In this case, we will make the command "/test"
+	$sender->sendMessage("This is a Test");</code></pre> Explanation: In the scenario above, if the command "/test" is issued, the server will send a message to the player who executed this Command! Congratulations on your first "if" statement! These
+are very important in PHP!<br>
+<BR>
+<blockquote>PREVIEW: Lets see what we got so far...</blockquote>
+<pre><code>
+&lt;?php
+
+namespace Plugin;
+
+use pocketmine\plugin\PluginBase;
+use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\utils\TextFormat;
+use pocketmine\command\Command;
+use pocketmine\command\CommandSender;
+
+class Main extends PluginBase implements Listener {
+
+	public function onEnable() {
+		$this->getServer()->getPluginManager()->registerEvents($this,$this);
+		$this->getLogger()->info("Plugin Enabled");
+	}
+
+	public function onJoin(PlayerJoinEvent $event) {
+		$player = $event->getPlayer();
+		$name = $player->getName();
+		$this->getServer()->broadcastMessage(TextFormat::GREEN."$name Joined The Inactive-to-Reactive test Server! Awesome!");
+	}
+
+	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool {
+		if ($command->getName() == "test") {
+			$sender->sendMessage("This Is A Test!");
+		}
+		return true;
+	}
+
+}
+</code></pre> The "return true" statement goes AFTER the if brackets "{" and "}" So when some one does /test they get a message "This is a test!" <br> Is this too boring for you? Wanna make it EVEN BETTER?
+
+<blockquote>This is how you can make the command "/test" a lot better! Now, when the player issues a command, he/she will recieve 4 steak!</blockquote>
+<pre><code>
+if ($command->getName() == "test") {
+	$sender->getInventory()->addItem(Item::get(364,0,4)); //364 = Item ID Value (in this case, 364 is steak)
+	$sender->sendMessage(TextFormat::BOLD."You have just recieved 4 steak!");
+}
+return true;
+</code></pre> This command lets you get four steaks! This shows you almost how powerful commands can be, but there is a LOT more! Unfortunately, something is not right! What would happen if the CONSOLE was the command sender? How do we prevent
+the Console?
+<br><br>
+<blockquote>To prevent the situation above we are going to use an if statement including "instanceof" </blockquote>
+
+<pre><code>
+	if ($command->getName() == "test") {
+		if (!$sender instanceof Player) { // Basically this checks if the Command Sender is NOT a player
+			$sender->sendMessage("This Command Only Works for players! Please perform this command IN GAME!"); // For Console Command Sender
+		} else { // if command sender is not a CONSOLE
+			$sender->getInventory()->addItem(Item::get(364,0,4));
+			$sender->sendMessage("You have just recieved 4 steak!");
+		}
+	}
+	return true;
+</code></pre> 
+    <br>This handy dandy chunk of code will make sure that your server does not crash when it tries to give the console 4 steak (which it can no longer do).
+    <h3>Wanna know EVEN more? Arguments.</h3>
+    Great ! Now that we know how to do "basic" commands, let's make the command <i>even better</i> by allowing the user to choose how many steaks he wants !<br>
+    We'll take a look at a variable that we added without knowing what it was... I talk about the <code>$args</code> variable!<br>
+    It basicly stores every single arguments you use in an array.<br>
+    But how is it stored? Like this: <pre><code>/command &lt;$args[0]&gt; &lt;$args[1]&gt; &lt;$args[2]&gt; &lt;$args[3]&gt; ...</code></pre>
+    Warning: Arrays always starts from 0 !<br>
+    Let's apply this to our code:<br>
+    
+<pre><code>
+	if ($command->getName() == "test") {
+		if (!$sender instanceof Player) {
+			$sender->sendMessage("This Command Only Works for players! Please perform this command IN GAME!");
+		} else {
+			$sender->getInventory()->addItem(Item::get(364,0,$args[0])); // We choose the first argument as the count !
+			$sender->sendMessage("You have just recieved". count($args[0]) . " steak!");
+		}
+	}
+	return true;
+</code></pre> 
+    As you can see, now we can use the /test &lt;steaks number&gt; and it will give us the number of steaks we want!<br>
+    But wait, what if the user doesn't enter the argument? The command won't work !<br>
+    To solve that issue, we need to add a parser to check if no argument "0" was entered, and if that's the case, "creating" it.<br>
+    We'll use function <a href="http://php.net/manual/en/function.isset.php"><code>isset</code></a> which allows us to check if a variable is defined.<br>
+    Let's what this give use in our code !<br>
+    
+<pre><code>
+	if ($command->getName() == "test") {
+		if (!$sender instanceof Player) {
+			$sender->sendMessage("This Command Only Works for players! Please perform this command IN GAME!");
+		} else {
+			if (!isset($args[0])) { // check if argument 0 isn't defined.
+				$args[0] = 4; // Defining $args[0] with value 4
+			}
+			$sender->getInventory()->addItem(Item::get(364,0,$args[0]));
+			$sender->sendMessage("You have just recieved" .count($args[0]). " steak!");
+		}
+	}
+	return true;
+</code></pre> 
+    Seems already better !<br>
+    But what if the user don't enter a number? And even if it's a number, what if it's negative?<br>
+    We also need to check this in our code! We will use a new function <a href="http://php.net/manual/en/function.is-int.php"><code>is_int</code></a> which will allow us to check if a variable is an integer.<br>
+    
+<pre><code>
+	if ($command->getName() == "test") {
+		if (!$sender instanceof Player) {
+			$sender->sendMessage("This Command Only Works for players! Please perform this command IN GAME!");
+		} else {
+			if (!isset($args[0]) || (is_int($args[0]) && $args[0] > 0)) { // Check if argument 0 is an integer and is more than 0. If you didn't "||" means or and "&&" means and
+				$args[0] = 4; // Defining $args[0] with value 4
+			}
+			$sender->getInventory()->addItem(Item::get(364,0,$args[0]));
+			$sender->sendMessage("You have just recieved" .count($args[0]). " steak!");
+		}
+	}
+	return true;
+</code></pre> 
+    And that's it ! You made your first command with arguments !
+<br><button onclick="location.hash='Vol3'">Next Lesson <img style="position: absolute" src="images/next.png"></img></button>
+</span>
