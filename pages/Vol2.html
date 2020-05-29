@@ -109,7 +109,7 @@ the Console?
     As you can see, now we can use the /test &lt;steaks number&gt; and it will give us the number of steaks we want!<br>
     But wait, what if the user doesn't enter the argument? The command won't work !<br>
     To solve that issue, we need to add a parser to check if no argument "0" was entered, and if that's the case, "creating" it.<br>
-    We'll use function <a href="http://php.net/manual/en/function.isset.php"><code>isset</code></a> which allows us to check if a variable is defined.<br>
+    We'll use function <a href="https://php.net/manual/en/function.isset.php"><code>isset</code></a> which allows us to check if a variable is defined.<br>
     Let's what this give use in our code !<br>
     
 <pre><code>
@@ -128,7 +128,7 @@ the Console?
 </code></pre> 
     Seems already better !<br>
     But what if the user don't enter a number? And even if it's a number, what if it's negative?<br>
-    We also need to check this in our code! We will use a new function <a href="http://php.net/manual/en/function.is-int.php"><code>is_int</code></a> which will allow us to check if a variable is an integer.<br>
+    We also need to check this in our code! We will use a new function <a href="https://php.net/manual/en/function.is-int.php"><code>is_int</code></a> which will allow us to check if a variable is an integer.<br>
     
 <pre><code>
 	if ($command->getName() == "test") {
