@@ -15,7 +15,7 @@ use pocketmine\plugin\PluginBase;
 
 # then, we type the class statement:
 class Main extends PluginBase { // this has a specific format: class (The File Name) extends PluginBase{ The "PluginBase" part differs based on which file it is, but that is very advanced. You will find out more another time.
-								</code></pre>
+                                </code></pre>
 <h3>Enable, Disable, and Load functions!</h3>
 After the class statement press ENTER key and type
 <pre><code>public function onLoad() {</code></pre>
@@ -33,17 +33,17 @@ use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase {
 
-	public function onLoad() {
-		$this->getLogger()->info("Plugin Loading");
-	}
+    public function onLoad() {
+        $this->getLogger()->info("Plugin Loading");
+    }
 
-	public function onEnable() {
-		$this->getLogger()->info("Enabled Plugin");
-	}
+    public function onEnable() {
+        $this->getLogger()->info("Enabled Plugin");
+    }
 
-	public function onDisable() {
-		$this->getLogger()->info("Plugin Disabled");
-	}
+    public function onDisable() {
+        $this->getLogger()->info("Plugin Disabled");
+    }
 
 }
 </code></pre> Public function onEnable is when your plugin Enables on the Logger or as we all know the CONSOLE. The plugin sends a message to the console on Enable!
@@ -75,17 +75,17 @@ use pocketmine\event\Listener;
 
 <blockquote>For the onEnable() function we add this line right after public function onEnable() (Since we are USING EVENTS!!!)</blockquote>
 <pre><code>
-	public function onEnable() {
-		$this->getServer()->getPluginManager()->registerEvents($this,$this); // THIS LINE
-		$this->getLogger()->info("Plugin Enabled");
+    public function onEnable() {
+        $this->getServer()->getPluginManager()->registerEvents($this,$this); // THIS LINE
+        $this->getLogger()->info("Plugin Enabled");
 </code></pre>
 
 <blockquote>Do you want to broadcast a message on the server saying someone joined in a FANCY way? Then we are going to use another function! Here:</blockquote>
 <pre><code>
-	public function onJoin(PlayerJoinEvent $event) {
-		$player = $event->getPlayer();
-		$name = $player->getName();
-		$this->getServer()->broadcastMessage("$name Joined The test Server! Awesome!");
+    public function onJoin(PlayerJoinEvent $event) {
+        $player = $event->getPlayer();
+        $name = $player->getName();
+        $this->getServer()->broadcastMessage("$name Joined The test Server! Awesome!");
    </code></pre> Did you know: getPlayer() and getName() are public functions? This is how NEW Functions are made! "onJoin" is a new public function! People who know JavaScript may know this!
 
 <blockquote>Congratulations on getting a Join message, but do you want it in COLOR? Import this "use" statement to your code:</blockquote>
@@ -114,29 +114,29 @@ use pocketmine\utils\TextFormat as C;
 
 class Main extends PluginBase implements Listener {
 
-	public function onLoad() {
-		$this->getLogger()->info("Plugin Loading");
-	}
+    public function onLoad() {
+        $this->getLogger()->info("Plugin Loading");
+    }
 
-	public function onEnable() {
-		$this->getServer()->getPluginManager()->registerEvents($this,$this);
-		$this->getLogger()->info("Enabled Plugin");
-	}
+    public function onEnable() {
+        $this->getServer()->getPluginManager()->registerEvents($this,$this);
+        $this->getLogger()->info("Enabled Plugin");
+    }
 
-	public function onDisable() {
-		$this->getLogger()->info("Plugin Disabled");
-	}
+    public function onDisable() {
+        $this->getLogger()->info("Plugin Disabled");
+    }
 
-	public function onJoin(PlayerJoinEvent $event) {
-		$player = $event->getPlayer();
-		$name = $player->getName();
-		$this->getServer()->broadcastMessage(C::GREEN."$name Joined The test Server! Awesome!");
-	}
+    public function onJoin(PlayerJoinEvent $event) {
+        $player = $event->getPlayer();
+        $name = $player->getName();
+        $this->getServer()->broadcastMessage(C::GREEN."$name Joined The test Server! Awesome!");
+    }
 
 }
 </code></pre>
 <button onclick="location.hash='Vol2'">
-	Next Lesson<img style="position: absolute" src="images/next.png"></img>
+    Next Lesson<img style="position: absolute" src="images/next.png"></img>
 </button>
 
 </span>
